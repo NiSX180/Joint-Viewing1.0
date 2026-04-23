@@ -32,7 +32,7 @@ const shareRoomBtn = document.getElementById('shareRoomBtn');
 const leaveRoomBtn = document.getElementById('leaveRoomBtn');
 
 function initApp() {
-    console.log('🚀 Joint Viewing запущен');
+    console.log('Joint Viewing запущен');
     currentRoom.id = generateRoomId();
     roomIdDisplay.textContent = currentRoom.id;
     initVKBridge();
@@ -108,7 +108,7 @@ function loadVideo() {
     const oid = parts[0];
     const videoId = parts[1];
     
-    console.log('📹 Загружаем видео:', { oid, videoId });
+    console.log('Загружаем видео:', { oid, videoId });
     
     currentRoom.videoUrl = url;
     currentRoom.isPlaying = false;
@@ -126,11 +126,11 @@ function loadVideo() {
     `;
     
     syncSeekBtn.disabled = false;
-    playPauseBtn.textContent = '▶️ ВОСПРОИЗВЕДЕНИЕ';
+    playPauseBtn.textContent = 'ВОСПРОИЗВЕДЕНИЕ';
     playPauseBtn.classList.add('play');
     playPauseBtn.classList.remove('pause');
     
-    addSystemMessage('📺 Видео загружено! (Управляйте через плеер)');
+    addSystemMessage('Видео загружено! (Управляйте через плеер)');
 }
 
 // Кнопка Play/Pause (имитация — видео не управляет, но показывает статус)
@@ -141,7 +141,7 @@ function togglePlayPause() {
     }
     
     if (currentRoom.isPlaying) {
-        playPauseBtn.textContent = '▶️ ВОСПРОИЗВЕДЕНИЕ';
+        playPauseBtn.textContent = 'ВОСПРОИЗВЕДЕНИЕ';
         playPauseBtn.classList.add('play');
         playPauseBtn.classList.remove('pause');
         currentRoom.isPlaying = false;
@@ -151,12 +151,12 @@ function togglePlayPause() {
         playPauseBtn.classList.add('pause');
         playPauseBtn.classList.remove('play');
         currentRoom.isPlaying = true;
-        addSystemMessage('▶️ Воспроизведение');
+        addSystemMessage('Воспроизведение');
     }
 }
 
 function syncSeek() {
-    addSystemMessage('🔄 Синхронизация будет добавлена в следующей версии');
+    addSystemMessage('Синхронизация будет добавлена в следующей версии');
     alert('Для синхронизации нужна настройка Firebase. Будет на следующем этапе.');
 }
 
@@ -221,7 +221,7 @@ function leaveRoom() {
         syncSeekBtn.disabled = true;
         currentRoom.isPlaying = false;
         currentRoom.videoUrl = null;
-        playPauseBtn.textContent = '▶️ ВОСПРОИЗВЕДЕНИЕ';
+        playPauseBtn.textContent = 'ВОСПРОИЗВЕДЕНИЕ';
         playPauseBtn.classList.add('play');
         playPauseBtn.classList.remove('pause');
         addSystemMessage(`Новая комната: ${currentRoom.id}`);
