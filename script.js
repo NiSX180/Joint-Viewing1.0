@@ -85,7 +85,7 @@ function setupEventListeners() {
     leaveRoomBtn.addEventListener('click', leaveRoom);
 }
 
-// Загрузка видео через iframe
+// Загрузка видео через iframe (поддержка vk.com и vkvideo.ru)
 function loadVideo() {
     const url = videoUrlInput.value.trim();
     if (!url) {
@@ -93,24 +93,29 @@ function loadVideo() {
         return;
     }
     
-    const match = url.match(/video(-?\d+)_(\d+)/);
+    // Поддерживаем оба формата:
+    // vk.com/video-12345678_87654321
+    // vkvideo.ru/video-12345678_87654321
+    const match = url.match(/(?:vk\.com|vkvideo\.ru)\/video(-?\d+_\d+)/);
+    
     if (!match) {
-        alert('Неверный формат ссылки. Пример: vk.com/video-202318352_456239019');
+        alert('Неверный формат ссылки.\nПример: vk.com/video-85016643_456239733');
         return;
     }
     
-    const oid = match[1];
-    const videoId = match[2];
+    // Разделяем oid и id (например, -85016643_456239733)
+    const parts = match[1].split('_');
+    const oid = parts[0];
+    const videoId = parts[1];
     
     console.log('📹 Загружаем видео:', { oid, videoId });
     
     currentRoom.videoUrl = url;
     currentRoom.isPlaying = false;
     
-    // Вставка iframe (работает на любом сайте)
     vkPlayerContainer.innerHTML = `
         <iframe 
-            src="https://vk.com/video_ext.php?oid=${oid}&id=${videoId}&hd=2&autoplay=0"
+            src="https://vkvideo.ru/video_ext.php?oid=${oid}&id=${videoId}&hd=2&autoplay=0"
             width="100%" 
             height="100%" 
             frameborder="0" 
