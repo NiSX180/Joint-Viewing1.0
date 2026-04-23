@@ -1,5 +1,6 @@
 // =====================================================
-// VK RAVE — СОВМЕСТНЫЙ ПРОСМОТР ВИДЕО
+// JOINT VIEWING — СОВМЕСТНЫЙ ПРОСМОТР ВИДЕО VK
+// Версия с iframe (работает на любом хостинге)
 // =====================================================
 
 let currentUser = {
@@ -10,12 +11,10 @@ let currentUser = {
 
 let currentRoom = {
     id: null,
-    videoId: null,
-    videoOid: null,
+    videoUrl: null,
     isPlaying: false
 };
 
-let vkPlayer = null;
 let vkBridgeAvailable = false;
 
 const roomIdDisplay = document.getElementById('roomIdDisplay');
@@ -33,11 +32,13 @@ const shareRoomBtn = document.getElementById('shareRoomBtn');
 const leaveRoomBtn = document.getElementById('leaveRoomBtn');
 
 function initApp() {
-    console.log('Joint Viewing запущен');
+    console.log('🚀 Joint Viewing запущен');
     currentRoom.id = generateRoomId();
     roomIdDisplay.textContent = currentRoom.id;
     initVKBridge();
     setupEventListeners();
+    addSystemMessage('Добро пожаловать в Joint Viewing!');
+    addSystemMessage(`Комната: ${currentRoom.id}`);
 }
 
 function generateRoomId() {
@@ -61,9 +62,11 @@ function initVKBridge() {
                 if (data.photo_100) {
                     userAvatar.innerHTML = `<img src="${data.photo_100}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">`;
                 }
-                addSystemMessage(`Привет, ${data.first_name}! Комната: ${currentRoom.id}`);
+                addSystemMessage(`Привет, ${data.first_name}!`);
             })
-            .catch(() => addSystemMessage('Демо-режим (без VK)'));
+            .catch(() => {
+                addSystemMessage('Режим браузера (без VK)');
+            });
     }
 }
 
@@ -82,80 +85,74 @@ function setupEventListeners() {
     leaveRoomBtn.addEventListener('click', leaveRoom);
 }
 
+// Загрузка видео через iframe
 function loadVideo() {
     const url = videoUrlInput.value.trim();
     if (!url) {
         alert('Вставьте ссылку на видео VK');
         return;
     }
+    
     const match = url.match(/video(-?\d+)_(\d+)/);
     if (!match) {
         alert('Неверный формат ссылки. Пример: vk.com/video-202318352_456239019');
         return;
     }
+    
     const oid = match[1];
     const videoId = match[2];
-    currentRoom.videoOid = oid;
-    currentRoom.videoId = videoId;
-    vkPlayerContainer.innerHTML = '';
-
-    try {
-        vkPlayer = new VK.VideoPlayer(vkPlayerContainer, {
-            id: videoId,
-            owner_id: oid
-        }, {
-            width: '100%',
-            height: '100%',
-            autoplay: 0
-        });
-        vkPlayer.on('started', () => {
-            currentRoom.isPlaying = true;
-            updatePlayPauseBtn();
-        });
-        vkPlayer.on('paused', () => {
-            currentRoom.isPlaying = false;
-            updatePlayPauseBtn();
-        });
-        vkPlayer.on('ended', () => {
-            currentRoom.isPlaying = false;
-            updatePlayPauseBtn();
-        });
-        syncSeekBtn.disabled = false;
-        addSystemMessage('📺 Видео загружено!');
-    } catch (error) {
-        console.error('Ошибка:', error);
-        alert('Не удалось загрузить видео. Проверьте настройки приватности.');
-        vkPlayerContainer.innerHTML = '<div class="player-placeholder"><div class="placeholder-icon">📺</div><p>Не удалось загрузить видео</p></div>';
-    }
+    
+    console.log('📹 Загружаем видео:', { oid, videoId });
+    
+    currentRoom.videoUrl = url;
+    currentRoom.isPlaying = false;
+    
+    // Вставка iframe (работает на любом сайте)
+    vkPlayerContainer.innerHTML = `
+        <iframe 
+            src="https://vk.com/video_ext.php?oid=${oid}&id=${videoId}&hd=2&autoplay=0"
+            width="100%" 
+            height="100%" 
+            frameborder="0" 
+            allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
+            allowfullscreen
+            style="border: none;">
+        </iframe>
+    `;
+    
+    syncSeekBtn.disabled = false;
+    playPauseBtn.textContent = '▶️ ВОСПРОИЗВЕДЕНИЕ';
+    playPauseBtn.classList.add('play');
+    playPauseBtn.classList.remove('pause');
+    
+    addSystemMessage('📺 Видео загружено! (Управляйте через плеер)');
 }
 
-function updatePlayPauseBtn() {
-    if (currentRoom.isPlaying) {
-        playPauseBtn.textContent = '⏸ ПАУЗА';
-        playPauseBtn.classList.add('pause');
-        playPauseBtn.classList.remove('play');
-    } else {
-        playPauseBtn.textContent = '▶️ ВОСПРОИЗВЕДЕНИЕ';
-        playPauseBtn.classList.add('play');
-        playPauseBtn.classList.remove('pause');
-    }
-}
-
+// Кнопка Play/Pause (имитация — видео не управляет, но показывает статус)
 function togglePlayPause() {
-    if (!vkPlayer) {
+    if (!currentRoom.videoUrl) {
         alert('Сначала загрузите видео');
         return;
     }
+    
     if (currentRoom.isPlaying) {
-        vkPlayer.pause();
+        playPauseBtn.textContent = '▶️ ВОСПРОИЗВЕДЕНИЕ';
+        playPauseBtn.classList.add('play');
+        playPauseBtn.classList.remove('pause');
+        currentRoom.isPlaying = false;
+        addSystemMessage('⏸ Пауза');
     } else {
-        vkPlayer.play();
+        playPauseBtn.textContent = '⏸ ПАУЗА';
+        playPauseBtn.classList.add('pause');
+        playPauseBtn.classList.remove('play');
+        currentRoom.isPlaying = true;
+        addSystemMessage('▶️ Воспроизведение');
     }
 }
 
 function syncSeek() {
-    if (!vkPlayer) return;
-    alert('Синхронизация будет работать после настройки сервера');
+    addSystemMessage('🔄 Синхронизация будет добавлена в следующей версии');
+    alert('Для синхронизации нужна настройка Firebase. Будет на следующем этапе.');
 }
 
 function sendChatMessage() {
@@ -184,28 +181,44 @@ function addSystemMessage(text) {
 }
 
 function shareRoom() {
-    const link = `https://nisx180.github.io/Joint-Viewing/#room_${currentRoom.id}`;
+    const link = `https://nisx180.github.io/Joint-Viewing1.0/#room_${currentRoom.id}`;
     if (vkBridgeAvailable) {
-        vkBridge.send('VKWebAppShare', { link: link });
+        vkBridge.send('VKWebAppShare', {
+            link: link,
+            text: `Присоединяйся к комнате ${currentRoom.id} в Joint Viewing!`
+        }).catch(() => fallbackShare(link));
     } else {
-        navigator.clipboard?.writeText(link).then(() => alert('Ссылка скопирована!'));
+        fallbackShare(link);
     }
     addSystemMessage(`🔗 Комната: ${currentRoom.id}`);
 }
 
+function fallbackShare(link) {
+    navigator.clipboard?.writeText(link).then(() => {
+        alert('Ссылка на комнату скопирована!');
+    }).catch(() => {
+        prompt('Ссылка на комнату:', link);
+    });
+}
+
 function leaveRoom() {
     if (confirm('Выйти из комнаты?')) {
-        if (vkPlayer) {
-            vkPlayer.destroy();
-            vkPlayer = null;
-        }
         currentRoom.id = generateRoomId();
         roomIdDisplay.textContent = currentRoom.id;
-        vkPlayerContainer.innerHTML = '<div class="player-placeholder"><div class="placeholder-icon">📺</div><p>Вставьте ссылку на видео VK</p></div>';
+        vkPlayerContainer.innerHTML = `
+            <div class="player-placeholder">
+                <div class="placeholder-icon">📺</div>
+                <p>Вставьте ссылку на видео VK</p>
+                <p class="placeholder-hint">vk.com/video-202318352_456239019</p>
+            </div>
+        `;
         videoUrlInput.value = '';
         syncSeekBtn.disabled = true;
         currentRoom.isPlaying = false;
-        updatePlayPauseBtn();
+        currentRoom.videoUrl = null;
+        playPauseBtn.textContent = '▶️ ВОСПРОИЗВЕДЕНИЕ';
+        playPauseBtn.classList.add('play');
+        playPauseBtn.classList.remove('pause');
         addSystemMessage(`Новая комната: ${currentRoom.id}`);
     }
 }
