@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>VK Rave — Смотрим вместе</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
+    <script src="https://vk.com/js/api/videoplayer.js"></script>
+</head>
+<body>
+    
+    <header class="app-header">
+        <div class="room-info">
+            <span class="room-label">🎬 КОМНАТА</span>
+            <span class="room-id" id="roomIdDisplay">----</span>
+        </div>
+        <div class="user-info">
+            <span id="userNameDisplay">Гость</span>
+            <div class="avatar-placeholder" id="userAvatar">👤</div>
+        </div>
+    </header>
+    
+    <div class="player-container">
+        <div id="vkPlayerContainer" class="player-wrapper">
+            <div class="player-placeholder">
+                <div class="placeholder-icon">📺</div>
+                <p>Вставьте ссылку на видео VK</p>
+                <p class="placeholder-hint">vk.com/video-202318352_456239019</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="player-controls">
+        <input type="text" id="videoUrlInput" class="video-url-input" placeholder="Вставь ссылку на VK Видео...">
+        <button id="loadVideoBtn" class="control-btn primary">ЗАГРУЗИТЬ</button>
+    </div>
+    
+    <div class="sync-controls">
+        <button id="playPauseBtn" class="sync-btn play">▶️ ВОСПРОИЗВЕДЕНИЕ</button>
+        <button id="syncSeekBtn" class="sync-btn secondary" disabled>🔄 СИНХРОНИЗИРОВАТЬ</button>
+    </div>
+    
+    <div class="chat-container">
+        <div class="chat-header">
+            <span>💬 ЧАТ КОМНАТЫ</span>
+            <span id="onlineCount">1 онлайн</span>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message system">
+                <span class="message-text">Добро пожаловать в комнату!</span>
+                <span class="message-time">Только что</span>
+            </div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="messageInput" class="chat-input" placeholder="Написать сообщение..." autocomplete="off">
+            <button id="sendMessageBtn" class="send-btn">➤</button>
+        </div>
+    </div>
+    
+    <footer class="app-footer">
+        <button id="shareRoomBtn" class="footer-btn">🔗 ПОДЕЛИТЬСЯ КОМНАТОЙ</button>
+        <button id="leaveRoomBtn" class="footer-btn danger">🚪 ВЫЙТИ</button>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
