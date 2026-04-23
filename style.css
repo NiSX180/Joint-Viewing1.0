@@ -469,3 +469,18 @@ body {
         padding: 12px 8px;
     }
 }
+/* ===== ИСПРАВЛЕНИЕ КНОПОК НА ТЕЛЕФОНЕ ===== */
+@media (max-width: 768px) {
+    .expand-btn,
+    .close-fullscreen-btn,
+    .action-btn {
+        background: #2a2a2a;
+        color: #aaa;
+        border: 1px solid #333;
+        border-radius: 8px;
+        padding: 12px;
+        font-weight: 600;
+        font-size: 11px;
+        letter-spacing: 1px;
+    }
+}
