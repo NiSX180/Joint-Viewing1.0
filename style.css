@@ -261,6 +261,8 @@ body {
     overflow-y: auto;
     margin-bottom: 12px;
     border: 1px solid #2a2a2a;
+    scrollbar-width: thin;
+    scrollbar-color: #3a3a3a transparent;
 }
 
 .message {
@@ -683,4 +685,21 @@ body {
         font-size: 11px;
         padding: 12px 8px;
     }
+}
+/* ===== СТИЛИЗАЦИЯ ПОЛЗУНКА ===== */
+.chat-messages::-webkit-scrollbar {
+    width: 5px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background: #3a3a3a;
+    border-radius: 10px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
