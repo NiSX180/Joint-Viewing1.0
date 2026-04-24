@@ -21,8 +21,30 @@
         </div>
     </header>
 
+        <!-- ГЛАВНОЕ МЕНЮ -->
+    <div id="mainMenu" class="main-menu">
+        <div class="menu-content">
+            <h1 class="menu-title">JOINT VIEWING</h1>
+            <p class="menu-subtitle">Совместный просмотр видео</p>
+            
+            <button id="createRoomBtn" class="menu-btn primary-btn">СОЗДАТЬ КОМНАТУ</button>
+            
+            <div class="menu-divider">
+                <span>или</span>
+            </div>
+            
+            <div class="join-room-block">
+                <input type="text" id="joinRoomInput" class="menu-input" placeholder="ID комнаты" maxlength="4">
+                <button id="joinRoomBtn" class="menu-btn secondary-btn">ПРИСОЕДИНИТЬСЯ</button>
+            </div>
+        </div>
+    </div>
+
     <!-- ОСНОВНОЙ КОНТЕЙНЕР -->
     <main class="main-layout">
+        
+                    <!-- Кнопка НАЗАД в комнате -->
+            <button id="backToMenuBtn" class="back-btn">НАЗАД</button>
         
         <!-- ЛЕВАЯ КОЛОНКА: ПЛЕЕР -->
         <section class="player-section">
