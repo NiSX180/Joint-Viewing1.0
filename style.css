@@ -577,6 +577,43 @@ body {
 
 /* ===== МОБИЛЬНАЯ ВЕРСИЯ ===== */
 @media (max-width: 768px) {
+        .app-header {
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 10px 14px;
+    }
+
+    .room-info {
+        order: 2;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .back-btn {
+        order: 1;
+        font-size: 10px;
+        padding: 6px 12px;
+    }
+
+    .user-info {
+        order: 1;
+        margin-left: auto;
+    }
+
+    .room-label {
+        font-size: 10px;
+    }
+
+    .room-id {
+        font-size: 13px;
+        padding: 3px 8px;
+    }
+
+    .copy-btn {
+        font-size: 9px;
+        padding: 3px 8px;
+        white-space: nowrap;
+    }
     .main-layout {
         flex-direction: column;
         height: auto;
