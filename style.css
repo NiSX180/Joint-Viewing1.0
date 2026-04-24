@@ -498,8 +498,9 @@ body {
     letter-spacing: 1px;
 }
 
-..join-room-block {
+.join-room-block {
     display: flex;
+    flex-direction: row;
     gap: 8px;
     align-items: stretch;
 }
