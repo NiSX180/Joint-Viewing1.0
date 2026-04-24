@@ -260,12 +260,11 @@ function addChatMessage(author, text, isSystem = false) {
         <div class="message-time">${time}</div>
     `;
     chatMessages.appendChild(div);
-    setTimeout(() => {
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }, 50);
+    div.scrollIntoView({ behavior: 'smooth', block: 'end' });
 }
 
 function listenToChat() {
+    db.ref('rooms/' + currentRoom.id + '/messages').off();
     db.ref('rooms/' + currentRoom.id + '/messages').on('child_added', function(snapshot) {
         const msg = snapshot.val();
         addChatMessage(msg.author, msg.text, false);
