@@ -1,4 +1,8 @@
-/* ===== БАЗОВЫЕ НАСТРОЙКИ ===== */
+/* =====================================================
+   JOINT VIEWING — СТИЛИ
+   ===================================================== */
+
+/* ==================== 0. СБРОС ==================== */
 * {
     margin: 0;
     padding: 0;
@@ -12,7 +16,7 @@ body {
     min-height: 100vh;
 }
 
-/* ===== ШАПКА ===== */
+/* ==================== 1. ШАПКА ==================== */
 .app-header {
     display: flex;
     justify-content: space-between;
@@ -69,14 +73,51 @@ body {
     border-radius: 6px;
 }
 
-/* ===== ОСНОВНОЙ LAYOUT ===== */
+/* ==================== 2. КНОПКИ ШАПКИ ==================== */
+.back-btn {
+    background: #2a2a2a;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 8px 14px;
+    color: #aaa;
+    font-weight: 600;
+    font-size: 11px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: background 0.2s;
+    flex-shrink: 0;
+}
+
+.back-btn:hover {
+    background: #333;
+}
+
+.copy-btn {
+    background: #2a2a2a;
+    border: 1px solid #333;
+    border-radius: 6px;
+    padding: 4px 10px;
+    color: #aaa;
+    font-weight: 600;
+    font-size: 10px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: background 0.2s;
+    flex-shrink: 0;
+}
+
+.copy-btn:hover {
+    background: #333;
+}
+
+/* ==================== 3. ОСНОВНОЙ LAYOUT ==================== */
 .main-layout {
     display: flex;
     height: calc(100vh - 62px);
     position: relative;
 }
 
-/* ===== ЛЕВАЯ КОЛОНКА: ПЛЕЕР ===== */
+/* ==================== 4. ПЛЕЕР (ЛЕВАЯ КОЛОНКА) ==================== */
 .player-section {
     flex: 1;
     min-width: 0;
@@ -129,7 +170,7 @@ body {
     color: #555;
 }
 
-/* Поле ввода и кнопки под плеером */
+/* ==================== 5. УПРАВЛЕНИЕ ПЛЕЕРОМ ==================== */
 .player-controls {
     display: flex;
     gap: 8px;
@@ -205,7 +246,6 @@ body {
     transform: scale(0.98);
 }
 
-/* Кнопка раскрытия видео */
 .expand-btn {
     padding: 12px;
     background: #2a2a2a;
@@ -223,7 +263,7 @@ body {
     background: #333;
 }
 
-/* ===== ПРАВАЯ КОЛОНКА: ЧАТ ===== */
+/* ==================== 6. ЧАТ (ПРАВАЯ КОЛОНКА) ==================== */
 .chat-section {
     width: 350px;
     display: flex;
@@ -243,6 +283,7 @@ body {
     flex-direction: column;
 }
 
+/* ----- 6.1. Шапка чата ----- */
 .chat-header {
     display: flex;
     justify-content: space-between;
@@ -277,6 +318,7 @@ body {
     border-color: #ff6b6b;
 }
 
+/* ----- 6.2. Сообщения ----- */
 .chat-messages {
     flex: 1;
     min-height: 0;
@@ -328,6 +370,7 @@ body {
     display: block;
 }
 
+/* ----- 6.3. Кнопка "Ответить" ----- */
 .reply-btn {
     background: transparent;
     border: none;
@@ -352,6 +395,7 @@ body {
     display: none !important;
 }
 
+/* ----- 6.4. Поле ввода чата ----- */
 .chat-input-area {
     display: flex;
     gap: 6px;
@@ -393,7 +437,7 @@ body {
     background: #555;
 }
 
-/* Кнопки внизу правой колонки */
+/* ----- 6.5. Кнопки комнаты ----- */
 .room-actions {
     display: flex;
     gap: 8px;
@@ -417,7 +461,25 @@ body {
     background: #333;
 }
 
-/* ===== ПОЛНОЭКРАННЫЙ РЕЖИМ ===== */
+/* ----- 6.6. Ползунок чата ----- */
+.chat-messages::-webkit-scrollbar {
+    width: 5px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background: #3a3a3a;
+    border-radius: 10px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* ==================== 7. ПОЛНОЭКРАННЫЙ РЕЖИМ ==================== */
 .fullscreen-overlay {
     position: fixed;
     top: 0;
@@ -467,7 +529,7 @@ body {
     background: rgba(255, 255, 255, 0.2);
 }
 
-/* ===== ГЛАВНОЕ МЕНЮ ===== */
+/* ==================== 8. ГЛАВНОЕ МЕНЮ ==================== */
 .main-menu {
     position: fixed;
     top: 0;
@@ -585,70 +647,15 @@ body {
     font-size: 14px;
 }
 
-/* ===== КНОПКА НАЗАД ===== */
-.back-btn {
-    background: #2a2a2a;
-    border: 1px solid #333;
-    border-radius: 8px;
-    padding: 8px 14px;
-    color: #aaa;
-    font-weight: 600;
-    font-size: 11px;
-    cursor: pointer;
-    letter-spacing: 1px;
-    transition: background 0.2s;
-    flex-shrink: 0;
-}
-
-.back-btn:hover {
-    background: #333;
-}
-
-/* ===== КНОПКА КОПИРОВАТЬ ===== */
-.copy-btn {
-    background: #2a2a2a;
-    border: 1px solid #333;
-    border-radius: 6px;
-    padding: 4px 10px;
-    color: #aaa;
-    font-weight: 600;
-    font-size: 10px;
-    cursor: pointer;
-    letter-spacing: 1px;
-    transition: background 0.2s;
-    flex-shrink: 0;
-}
-
-.copy-btn:hover {
-    background: #333;
-}
-
-/* ===== СКРЫТИЕ БЛОКОВ ===== */
+/* ==================== 9. СКРЫТИЕ БЛОКОВ ==================== */
 .app-header.hidden,
 .main-layout.hidden {
     display: none;
 }
 
-/* ===== МОБИЛЬНАЯ ВЕРСИЯ ===== */
+/* ==================== 10. МОБИЛЬНАЯ ВЕРСИЯ ==================== */
 @media (max-width: 768px) {
-    .chat-section {
-        width: 100%;
-        padding: 14px;
-        padding-bottom: env(safe-area-inset-bottom, 14px);
-    }
-
-    .chat-container {
-        max-height: calc(100vh - 400px);
-        min-height: 200px;
-    }
-
-    .chat-input-area {
-        position: sticky;
-        bottom: 0;
-        background: #222;
-        padding: 8px 0;
-    }
-
+    /* Шапка */
     .app-header {
         flex-wrap: wrap;
         gap: 8px;
@@ -687,20 +694,17 @@ body {
         white-space: nowrap;
     }
 
+    /* Layout */
     .main-layout {
         flex-direction: column;
         height: auto;
     }
 
+    /* Плеер */
     .player-section {
         border-right: none;
         border-bottom: 1px solid #2a2a2a;
         padding: 14px;
-    }
-
-    .chat-messages {
-        max-height: 200px;
-        min-height: 120px;
     }
 
     .player-wrapper {
@@ -711,6 +715,31 @@ body {
         display: none;
     }
 
+    /* Чат */
+    .chat-section {
+        width: 100%;
+        padding: 14px;
+        padding-bottom: env(safe-area-inset-bottom, 14px);
+    }
+
+    .chat-container {
+        max-height: calc(100vh - 400px);
+        min-height: 200px;
+    }
+
+    .chat-messages {
+        max-height: 200px;
+        min-height: 120px;
+    }
+
+    .chat-input-area {
+        position: sticky;
+        bottom: 0;
+        background: #222;
+        padding: 8px 0;
+    }
+
+    /* Кнопки */
     .room-actions {
         flex-direction: row;
     }
@@ -729,7 +758,7 @@ body {
     }
 }
 
-/* ===== ОЧЕНЬ МАЛЕНЬКИЕ ЭКРАНЫ ===== */
+/* ==================== 11. ОЧЕНЬ МАЛЕНЬКИЕ ЭКРАНЫ ==================== */
 @media (max-width: 400px) {
     .player-section {
         padding: 10px;
@@ -749,22 +778,4 @@ body {
         font-size: 11px;
         padding: 12px 8px;
     }
-}
-
-/* ===== СТИЛИЗАЦИЯ ПОЛЗУНКА ===== */
-.chat-messages::-webkit-scrollbar {
-    width: 5px;
-}
-
-.chat-messages::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.chat-messages::-webkit-scrollbar-thumb {
-    background: #3a3a3a;
-    border-radius: 10px;
-}
-
-.chat-messages::-webkit-scrollbar-thumb:hover {
-    background: #555;
 }
