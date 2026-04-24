@@ -246,10 +246,35 @@ body {
 .chat-header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     color: #888;
     font-size: 11px;
     letter-spacing: 1px;
     margin-bottom: 14px;
+}
+
+.chat-header-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.clear-chat-btn {
+    background: transparent;
+    border: 1px solid #555;
+    border-radius: 6px;
+    padding: 3px 8px;
+    color: #888;
+    font-size: 10px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: all 0.2s;
+}
+
+.clear-chat-btn:hover {
+    background: #3a1a1a;
+    color: #ff6b6b;
+    border-color: #ff6b6b;
 }
 
 .chat-messages {
@@ -269,6 +294,7 @@ body {
     margin-bottom: 8px;
     padding-bottom: 6px;
     border-bottom: 1px solid #2a2a2a;
+    position: relative;
 }
 
 .message:last-child {
@@ -300,6 +326,30 @@ body {
     font-size: 10px;
     margin-top: 3px;
     display: block;
+}
+
+.reply-btn {
+    background: transparent;
+    border: none;
+    color: #666;
+    font-size: 10px;
+    cursor: pointer;
+    padding: 2px 0;
+    letter-spacing: 1px;
+    transition: color 0.2s;
+    display: none;
+}
+
+.message:hover .reply-btn {
+    display: inline;
+}
+
+.reply-btn:hover {
+    color: #aaa;
+}
+
+.message.system .reply-btn {
+    display: none !important;
 }
 
 .chat-input-area {
@@ -581,7 +631,7 @@ body {
 
 /* ===== МОБИЛЬНАЯ ВЕРСИЯ ===== */
 @media (max-width: 768px) {
-        .chat-section {
+    .chat-section {
         width: 100%;
         padding: 14px;
         padding-bottom: env(safe-area-inset-bottom, 14px);
@@ -598,7 +648,8 @@ body {
         background: #222;
         padding: 8px 0;
     }
-        .app-header {
+
+    .app-header {
         flex-wrap: wrap;
         gap: 8px;
         padding: 10px 14px;
@@ -635,6 +686,7 @@ body {
         padding: 3px 8px;
         white-space: nowrap;
     }
+
     .main-layout {
         flex-direction: column;
         height: auto;
@@ -643,11 +695,6 @@ body {
     .player-section {
         border-right: none;
         border-bottom: 1px solid #2a2a2a;
-        padding: 14px;
-    }
-
-    .chat-section {
-        width: 100%;
         padding: 14px;
     }
 
@@ -703,6 +750,7 @@ body {
         padding: 12px 8px;
     }
 }
+
 /* ===== СТИЛИЗАЦИЯ ПОЛЗУНКА ===== */
 .chat-messages::-webkit-scrollbar {
     width: 5px;
