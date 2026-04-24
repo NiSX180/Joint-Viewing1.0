@@ -62,23 +62,15 @@ function enterRoom() {
     document.querySelector('.main-layout').classList.remove('hidden');
     roomIdDisplay.textContent = currentRoom.id;
 
-    // Очищаем старые сообщения и начинаем слушать чат
     chatMessages.innerHTML = '';
     listenToChat();
 
-    // Присоединяемся к комнате (увеличиваем счётчик)
-    const onlineRef = db.ref('rooms/' + currentRoom.id + '/online');
-    onlineRef.transaction(function(count) {
-        return (count || 0) + 1;
-    });
-    updateOnlineCount();
-}
+    // Добавляем пользователя в список и автоудаление при выходе
+    const userRef = db.ref('rooms/' + currentRoom.id + '/users/' + Date.now());
+    userRef.set(true);
+    userRef.onDisconnect().remove();
 
-function leaveChat() {
-    const onlineRef = db.ref('rooms/' + currentRoom.id + '/online');
-    onlineRef.transaction(function(count) {
-        return Math.max((count || 1) - 1, 0);
-    });
+    updateOnlineCount();
 }
 
 function generateRoomId() {
@@ -143,7 +135,6 @@ function setupEventListeners() {
 
     document.getElementById('backToMenuBtn').addEventListener('click', function() {
         if (confirm('Вернуться в меню? Прогресс комнаты будет потерян.')) {
-            leaveChat();
             document.getElementById('mainMenu').classList.remove('hidden');
             document.querySelector('.app-header').classList.add('hidden');
             document.querySelector('.main-layout').classList.add('hidden');
@@ -260,7 +251,7 @@ function addChatMessage(author, text, isSystem = false) {
         <div class="message-time">${time}</div>
     `;
     chatMessages.appendChild(div);
-    div.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
 function listenToChat() {
@@ -297,7 +288,6 @@ function fallbackShare(link) {
 }
 
 function leaveRoom() {
-    leaveChat();
     if (confirm('Выйти из комнаты?')) {
         currentRoom.id = generateRoomId();
         roomIdDisplay.textContent = currentRoom.id;
@@ -319,8 +309,8 @@ function leaveRoom() {
 }
 
 function updateOnlineCount() {
-    db.ref('rooms/' + currentRoom.id + '/online').on('value', function(snapshot) {
-        const count = snapshot.val() || 0;
+    db.ref('rooms/' + currentRoom.id + '/users').on('value', function(snapshot) {
+        const count = snapshot.numChildren();
         document.getElementById('onlineCount').textContent = count + ' онлайн';
     });
 }
