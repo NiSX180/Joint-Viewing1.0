@@ -250,10 +250,12 @@ function addChatMessage(author, text, isSystem = false) {
         <div class="message-text">${text}</div>
         <div class="message-time">${time}</div>
     `;
-       chatMessages.appendChild(div);
-    requestAnimationFrame(() => {
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    });
+    chatMessages.appendChild(div);
+    
+    // Прокручиваем, только если сообщений больше 7
+    if (chatMessages.children.length > 7) {
+        div.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
 }
 function listenToChat() {
     db.ref('rooms/' + currentRoom.id + '/messages').off();
