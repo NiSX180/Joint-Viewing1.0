@@ -6,7 +6,7 @@
     <title>Joint Viewing</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
-        <!-- Firebase -->
+    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 </head>
@@ -78,7 +78,10 @@
             <div class="chat-container">
                 <div class="chat-header">
                     <span>ЧАТ КОМНАТЫ</span>
-                    <span id="onlineCount">1 онлайн</span>
+                    <div class="chat-header-right">
+                        <button id="clearChatBtn" class="clear-chat-btn">ОЧИСТИТЬ</button>
+                        <span id="onlineCount">1 онлайн</span>
+                    </div>
                 </div>
                 <div class="chat-messages" id="chatMessages">
                     <div class="message system">
