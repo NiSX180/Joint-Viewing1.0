@@ -1,6 +1,5 @@
 // =====================================================
 // JOINT VIEWING — СОВМЕСТНЫЙ ПРОСМОТР ВИДЕО VK
-// Версия с iframe (работает на любом хостинге)
 // =====================================================
 
 // Firebase
@@ -65,12 +64,12 @@ function enterRoom() {
     chatMessages.innerHTML = '';
     listenToChat();
 
-    // Добавляем пользователя в список и автоудаление при выходе
     const userRef = db.ref('rooms/' + currentRoom.id + '/users/' + Date.now());
     userRef.set(true);
     userRef.onDisconnect().remove();
 
     updateOnlineCount();
+    systemEvent('join', currentUser.name || 'Гость');
 }
 
 function generateRoomId() {
@@ -135,6 +134,7 @@ function setupEventListeners() {
 
     document.getElementById('backToMenuBtn').addEventListener('click', function() {
         if (confirm('Вернуться в меню? Прогресс комнаты будет потерян.')) {
+            systemEvent('leave', currentUser.name || 'Гость');
             document.getElementById('mainMenu').classList.remove('hidden');
             document.querySelector('.app-header').classList.add('hidden');
             document.querySelector('.main-layout').classList.add('hidden');
@@ -154,6 +154,14 @@ function setupEventListeners() {
         }).catch(() => {
             prompt('ID комнаты:', currentRoom.id);
         });
+    });
+
+    document.getElementById('clearChatBtn').addEventListener('click', function() {
+        if (confirm('Очистить историю чата?')) {
+            db.ref('rooms/' + currentRoom.id + '/messages').remove();
+            chatMessages.innerHTML = '';
+            addSystemMessage('Чат очищен');
+        }
     });
 }
 
@@ -198,6 +206,7 @@ function loadVideo() {
     playPauseBtn.classList.remove('pause');
 
     addSystemMessage('Видео загружено');
+    systemEvent('video', url);
 }
 
 function togglePlayPause() {
@@ -233,40 +242,86 @@ function sendChatMessage() {
     const messageData = {
         author: currentUser.name || 'Гость',
         text: text,
-        time: Date.now()
+        time: Date.now(),
+        system: false
     };
 
     db.ref('rooms/' + currentRoom.id + '/messages').push(messageData);
     messageInput.value = '';
 }
 
-function addChatMessage(author, text, isSystem = false) {
+function addChatMessage(author, text, isSystem, replyTo) {
     const div = document.createElement('div');
-    div.className = isSystem ? 'message system' : 'message';
+    const systemClass = isSystem ? ' system' : '';
+    div.className = 'message' + systemClass;
     const now = new Date();
     const time = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
-    div.innerHTML = `
-        <div class="message-author">${isSystem ? 'Система' : author}</div>
-        <div class="message-text">${text}</div>
-        <div class="message-time">${time}</div>
-    `;
+    
+    let replyHTML = '';
+    if (!isSystem) {
+        replyHTML = `<button class="reply-btn" data-author="${(author || '').replace(/"/g, '&quot;')}" data-text="${text.replace(/"/g, '&quot;')}">ОТВЕТИТЬ</button>`;
+    }
+    
+    let authorHTML = '';
+    if (isSystem) {
+        authorHTML = '<div class="message-author">Система</div>';
+    } else if (author) {
+        authorHTML = '<div class="message-author">' + author + '</div>';
+    }
+    
+    div.innerHTML = authorHTML + '<div class="message-text">' + text + '</div><div class="message-time">' + time + '</div>' + replyHTML;
     chatMessages.appendChild(div);
     
-    // Прокручиваем, только если сообщений больше 7
+    // Обработчик кнопки "Ответить"
+    if (!isSystem) {
+        const replyBtn = div.querySelector('.reply-btn');
+        if (replyBtn) {
+            replyBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                messageInput.value = '> ' + this.dataset.author + ': ' + this.dataset.text + '\n';
+                messageInput.focus();
+            });
+        }
+    }
+    
+    // Прокрутка
     if (chatMessages.children.length > 7) {
         div.scrollIntoView({ behavior: 'smooth', block: 'end' });
     }
 }
+
 function listenToChat() {
     db.ref('rooms/' + currentRoom.id + '/messages').off();
     db.ref('rooms/' + currentRoom.id + '/messages').on('child_added', function(snapshot) {
         const msg = snapshot.val();
-        addChatMessage(msg.author, msg.text, false);
+        addChatMessage(msg.author, msg.text, msg.system || false);
     });
 }
 
 function addSystemMessage(text) {
-    addChatMessage('', text, true);
+    db.ref('rooms/' + currentRoom.id + '/messages').push({
+        author: '',
+        text: text,
+        time: Date.now(),
+        system: true
+    });
+}
+
+function systemEvent(type, data) {
+    const events = {
+        'join': data + ' присоединился к комнате',
+        'leave': data + ' покинул комнату',
+        'video': 'Видео загружено: ' + data
+    };
+    const text = events[type] || '';
+    if (text) {
+        db.ref('rooms/' + currentRoom.id + '/messages').push({
+            author: '',
+            text: text,
+            time: Date.now(),
+            system: true
+        });
+    }
 }
 
 function shareRoom() {
@@ -291,6 +346,7 @@ function fallbackShare(link) {
 }
 
 function leaveRoom() {
+    systemEvent('leave', currentUser.name || 'Гость');
     if (confirm('Выйти из комнаты?')) {
         currentRoom.id = generateRoomId();
         roomIdDisplay.textContent = currentRoom.id;
