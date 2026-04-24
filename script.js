@@ -3,6 +3,19 @@
 // Версия с iframe (работает на любом хостинге)
 // =====================================================
 
+// Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyABEtgE3HOh41kmgPQXIuO-LTI2ZPieaBc",
+  authDomain: "joint-viewing.firebaseapp.com",
+  projectId: "joint-viewing",
+  storageBucket: "joint-viewing.firebasestorage.app",
+  messagingSenderId: "224004484626",
+  appId: "1:224004484626:web:502ae915083a8e3c4f2cb"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
 let currentUser = {
     id: null,
     name: 'Гость',
