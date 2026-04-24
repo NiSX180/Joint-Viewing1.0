@@ -61,10 +61,24 @@ function enterRoom() {
     document.querySelector('.app-header').classList.remove('hidden');
     document.querySelector('.main-layout').classList.remove('hidden');
     roomIdDisplay.textContent = currentRoom.id;
-    
+
     // Очищаем старые сообщения и начинаем слушать чат
     chatMessages.innerHTML = '';
     listenToChat();
+
+    // Присоединяемся к комнате (увеличиваем счётчик)
+    const onlineRef = db.ref('rooms/' + currentRoom.id + '/online');
+    onlineRef.transaction(function(count) {
+        return (count || 0) + 1;
+    });
+    updateOnlineCount();
+}
+
+function leaveChat() {
+    const onlineRef = db.ref('rooms/' + currentRoom.id + '/online');
+    onlineRef.transaction(function(count) {
+        return Math.max((count || 1) - 1, 0);
+    });
 }
 
 function generateRoomId() {
@@ -129,6 +143,7 @@ function setupEventListeners() {
 
     document.getElementById('backToMenuBtn').addEventListener('click', function() {
         if (confirm('Вернуться в меню? Прогресс комнаты будет потерян.')) {
+            leaveChat();
             document.getElementById('mainMenu').classList.remove('hidden');
             document.querySelector('.app-header').classList.add('hidden');
             document.querySelector('.main-layout').classList.add('hidden');
@@ -223,16 +238,14 @@ function syncSeek() {
 function sendChatMessage() {
     const text = messageInput.value.trim();
     if (!text) return;
-    
+
     const messageData = {
         author: currentUser.name || 'Гость',
         text: text,
         time: Date.now()
     };
-    
-    // Отправляем в Firebase в комнату
+
     db.ref('rooms/' + currentRoom.id + '/messages').push(messageData);
-    
     messageInput.value = '';
 }
 
@@ -247,14 +260,18 @@ function addChatMessage(author, text, isSystem = false) {
         <div class="message-time">${time}</div>
     `;
     chatMessages.appendChild(div);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
+    setTimeout(() => {
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }, 50);
 }
+
 function listenToChat() {
     db.ref('rooms/' + currentRoom.id + '/messages').on('child_added', function(snapshot) {
         const msg = snapshot.val();
         addChatMessage(msg.author, msg.text, false);
     });
 }
+
 function addSystemMessage(text) {
     addChatMessage('', text, true);
 }
@@ -281,6 +298,7 @@ function fallbackShare(link) {
 }
 
 function leaveRoom() {
+    leaveChat();
     if (confirm('Выйти из комнаты?')) {
         currentRoom.id = generateRoomId();
         roomIdDisplay.textContent = currentRoom.id;
@@ -299,6 +317,13 @@ function leaveRoom() {
         playPauseBtn.classList.remove('pause');
         addSystemMessage('Новая комната: ' + currentRoom.id);
     }
+}
+
+function updateOnlineCount() {
+    db.ref('rooms/' + currentRoom.id + '/online').on('value', function(snapshot) {
+        const count = snapshot.val() || 0;
+        document.getElementById('onlineCount').textContent = count + ' онлайн';
+    });
 }
 
 document.addEventListener('DOMContentLoaded', initApp);
