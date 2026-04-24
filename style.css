@@ -474,6 +474,7 @@ body {
 }
 
 .secondary-btn {
+    flex: 1;
     background: #2a2a2a;
     color: #aaa;
     border: 1px solid #3a3a3a;
@@ -493,10 +494,12 @@ body {
 .join-room-block {
     display: flex;
     gap: 8px;
+    align-items: stretch;
 }
 
 .menu-input {
-    flex: 1;
+   width: 120px;
+    flex: 0 0 120px;
     background: #2a2a2a;
     border: 1px solid #3a3a3a;
     border-radius: 10px;
