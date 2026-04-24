@@ -254,7 +254,7 @@ function addChatMessage(author, text, isSystem = false) {
     requestAnimationFrame(() => {
         chatMessages.scrollTop = chatMessages.scrollHeight;
     });
-
+}
 function listenToChat() {
     db.ref('rooms/' + currentRoom.id + '/messages').off();
     db.ref('rooms/' + currentRoom.id + '/messages').on('child_added', function(snapshot) {
