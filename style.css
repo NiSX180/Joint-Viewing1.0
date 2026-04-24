@@ -478,8 +478,15 @@ body {
     background: #2a2a2a;
     color: #aaa;
     border: 1px solid #3a3a3a;
+    border-radius: 10px;
+    padding: 16px 10px;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: background 0.2s;
+    white-space: nowrap;
 }
-
 .secondary-btn:hover {
     background: #333;
 }
@@ -491,23 +498,23 @@ body {
     letter-spacing: 1px;
 }
 
-.join-room-block {
+..join-room-block {
     display: flex;
     gap: 8px;
     align-items: stretch;
 }
 
 .menu-input {
-   width: 120px;
-    flex: 0 0 120px;
+    flex: 2;
+    min-width: 0;
     background: #2a2a2a;
     border: 1px solid #3a3a3a;
     border-radius: 10px;
-    padding: 16px 14px;
+    padding: 16px 10px;
     color: #fff;
-    font-size: 18px;
+    font-size: 16px;
     text-align: center;
-    letter-spacing: 4px;
+    letter-spacing: 3px;
     text-transform: uppercase;
     outline: none;
 }
