@@ -1,43 +1,49 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+    <!-- ==================== МЕТА-ТЕГИ ==================== -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Joint Viewing</title>
+
+    <!-- ==================== СТИЛИ ==================== -->
     <link rel="stylesheet" href="style.css">
+
+    <!-- ==================== ВНЕШНИЕ БИБЛИОТЕКИ ==================== -->
     <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
-    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 </head>
 <body>
     
-    <!-- ШАПКА -->
+    <!-- ==================== 1. ШАПКА ==================== -->
     <header class="app-header">
         <button id="backToMenuBtn" class="back-btn">НАЗАД</button>
+
         <div class="room-info">
             <span class="room-label">КОМНАТА</span>
             <span class="room-id" id="roomIdDisplay">----</span>
             <button id="copyRoomBtn" class="copy-btn">КОПИРОВАТЬ</button>
         </div>
+
         <div class="user-info">
             <span id="userNameDisplay">Гость</span>
             <div class="avatar-placeholder" id="userAvatar"></div>
         </div>
     </header>
 
-    <!-- ГЛАВНОЕ МЕНЮ -->
+    <!-- ==================== 2. ГЛАВНОЕ МЕНЮ ==================== -->
     <div id="mainMenu" class="main-menu">
         <div class="menu-content">
             <h1 class="menu-title">JOINT VIEWING</h1>
             <p class="menu-subtitle">Совместный просмотр видео</p>
-            
+
             <button id="createRoomBtn" class="menu-btn primary-btn">СОЗДАТЬ КОМНАТУ</button>
-            
+
             <div class="menu-divider">
                 <span>или</span>
             </div>
-            
+
             <div class="join-room-block">
                 <input type="text" id="joinRoomInput" class="menu-input" placeholder="ID комнаты" maxlength="4">
                 <button id="joinRoomBtn" class="menu-btn secondary-btn">ПРИСОЕДИНИТЬСЯ</button>
@@ -45,11 +51,12 @@
         </div>
     </div>
 
-    <!-- ОСНОВНОЙ КОНТЕЙНЕР -->
+    <!-- ==================== 3. ОСНОВНОЙ КОНТЕЙНЕР ==================== -->
     <main class="main-layout">
-        
-        <!-- ЛЕВАЯ КОЛОНКА: ПЛЕЕР -->
+
+        <!-- ==================== 4. ПЛЕЕР (ЛЕВАЯ КОЛОНКА) ==================== -->
         <section class="player-section">
+            <!-- Контейнер плеера -->
             <div class="player-wrapper" id="playerWrapper">
                 <div id="vkPlayerContainer" class="player-inner">
                     <div class="player-placeholder">
@@ -58,24 +65,27 @@
                     </div>
                 </div>
             </div>
-            
-            <!-- Кнопки под плеером -->
+
+            <!-- Поле ввода ссылки и кнопка загрузки -->
             <div class="player-controls">
                 <input type="text" id="videoUrlInput" class="video-url-input" placeholder="Ссылка на VK Видео...">
                 <button id="loadVideoBtn" class="control-btn">ЗАГРУЗИТЬ</button>
             </div>
+
+            <!-- Кнопки управления плеером -->
             <div class="sync-controls">
                 <button id="playPauseBtn" class="sync-btn">ВОСПРОИЗВЕДЕНИЕ</button>
                 <button id="syncSeekBtn" class="sync-btn secondary" disabled>СИНХРОНИЗАЦИЯ</button>
             </div>
-            
-            <!-- Кнопка раскрытия видео -->
+
+            <!-- Кнопка раскрытия видео на весь экран -->
             <button id="expandVideoBtn" class="expand-btn">РАЗВЕРНУТЬ</button>
         </section>
-        
-        <!-- ПРАВАЯ КОЛОНКА: ЧАТ -->
+
+        <!-- ==================== 5. ЧАТ (ПРАВАЯ КОЛОНКА) ==================== -->
         <section class="chat-section">
             <div class="chat-container">
+                <!-- Шапка чата -->
                 <div class="chat-header">
                     <span>ЧАТ КОМНАТЫ</span>
                     <div class="chat-header-right">
@@ -83,17 +93,23 @@
                         <span id="onlineCount">1 онлайн</span>
                     </div>
                 </div>
+
+                <!-- Сообщения -->
                 <div class="chat-messages" id="chatMessages">
                     <div class="message system">
                         <span class="message-text">Добро пожаловать в Joint Viewing</span>
                         <span class="message-time">Только что</span>
                     </div>
                 </div>
+
+                <!-- Поле ввода сообщения -->
                 <div class="chat-input-area">
                     <input type="text" id="messageInput" class="chat-input" placeholder="Сообщение..." autocomplete="off">
                     <button id="sendMessageBtn" class="send-btn">→</button>
                 </div>
             </div>
+
+            <!-- Кнопки управления комнатой -->
             <div class="room-actions">
                 <button id="shareRoomBtn" class="action-btn">ПОДЕЛИТЬСЯ</button>
                 <button id="leaveRoomBtn" class="action-btn">ВЫЙТИ</button>
@@ -101,12 +117,13 @@
         </section>
     </main>
 
-    <!-- ОВЕРЛЕЙ ДЛЯ ПОЛНОЭКРАННОГО ВИДЕО -->
+    <!-- ==================== 6. ПОЛНОЭКРАННЫЙ РЕЖИМ ==================== -->
     <div id="fullscreenOverlay" class="fullscreen-overlay hidden">
         <div class="fullscreen-player" id="fullscreenPlayer"></div>
         <button id="closeFullscreenBtn" class="close-fullscreen-btn">СВЕРНУТЬ</button>
     </div>
 
+    <!-- ==================== СКРИПТЫ ==================== -->
     <script src="script.js"></script>
 </body>
 </html>
