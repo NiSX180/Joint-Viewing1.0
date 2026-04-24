@@ -73,6 +73,7 @@ body {
 .main-layout {
     display: flex;
     height: calc(100vh - 62px);
+    position: relative;
 }
 
 /* ===== ЛЕВАЯ КОЛОНКА: ПЛЕЕР ===== */
@@ -412,65 +413,175 @@ body {
     background: rgba(255, 255, 255, 0.2);
 }
 
+/* ===== ГЛАВНОЕ МЕНЮ ===== */
+.main-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+
+.main-menu.hidden {
+    display: none;
+}
+
+.menu-content {
+    text-align: center;
+    padding: 40px 30px;
+    max-width: 400px;
+    width: 100%;
+}
+
+.menu-title {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+.menu-subtitle {
+    color: #777;
+    font-size: 14px;
+    margin-bottom: 40px;
+}
+
+.menu-btn {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: background 0.2s;
+}
+
+.primary-btn {
+    background: #3a3a3a;
+    color: #fff;
+}
+
+.primary-btn:hover {
+    background: #555;
+}
+
+.secondary-btn {
+    background: #2a2a2a;
+    color: #aaa;
+    border: 1px solid #3a3a3a;
+}
+
+.secondary-btn:hover {
+    background: #333;
+}
+
+.menu-divider {
+    margin: 24px 0;
+    color: #555;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+.join-room-block {
+    display: flex;
+    gap: 8px;
+}
+
+.menu-input {
+    flex: 1;
+    background: #2a2a2a;
+    border: 1px solid #3a3a3a;
+    border-radius: 10px;
+    padding: 16px 14px;
+    color: #fff;
+    font-size: 18px;
+    text-align: center;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    outline: none;
+}
+
+.menu-input:focus {
+    border-color: #666;
+}
+
+.menu-input::placeholder {
+    color: #555;
+    letter-spacing: 1px;
+    font-size: 14px;
+}
+
+/* ===== КНОПКА НАЗАД ===== */
+.back-btn {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    z-index: 10;
+    background: #2a2a2a;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 10px 18px;
+    color: #aaa;
+    font-weight: 600;
+    font-size: 12px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: background 0.2s;
+}
+
+.back-btn:hover {
+    background: #333;
+}
+
+/* ===== СКРЫТИЕ БЛОКОВ ===== */
+.app-header.hidden,
+.main-layout.hidden {
+    display: none;
+}
+
 /* ===== МОБИЛЬНАЯ ВЕРСИЯ ===== */
 @media (max-width: 768px) {
     .main-layout {
         flex-direction: column;
         height: auto;
     }
-    
+
     .player-section {
         border-right: none;
         border-bottom: 1px solid #2a2a2a;
         padding: 14px;
     }
-    
+
     .chat-section {
         width: 100%;
         padding: 14px;
     }
-    
+
     .chat-messages {
         max-height: 200px;
         min-height: 120px;
     }
-    
+
     .player-wrapper {
         aspect-ratio: 16 / 9;
     }
-    
+
     .expand-btn {
         display: none;
     }
-    
+
     .room-actions {
         flex-direction: row;
     }
-}
 
-/* ===== ОЧЕНЬ МАЛЕНЬКИЕ ЭКРАНЫ ===== */
-@media (max-width: 400px) {
-    .player-section {
-        padding: 10px;
-        gap: 8px;
-    }
-    
-    .chat-section {
-        padding: 10px;
-        gap: 8px;
-    }
-    
-    .sync-controls {
-        flex-direction: row;
-    }
-    
-    .sync-btn {
-        font-size: 11px;
-        padding: 12px 8px;
-    }
-}
-/* ===== ИСПРАВЛЕНИЕ КНОПОК НА ТЕЛЕФОНЕ ===== */
-@media (max-width: 768px) {
     .expand-btn,
     .close-fullscreen-btn,
     .action-btn {
@@ -482,5 +593,32 @@ body {
         font-weight: 600;
         font-size: 11px;
         letter-spacing: 1px;
+    }
+
+    .back-btn {
+        position: static;
+        margin-bottom: 8px;
+    }
+}
+
+/* ===== ОЧЕНЬ МАЛЕНЬКИЕ ЭКРАНЫ ===== */
+@media (max-width: 400px) {
+    .player-section {
+        padding: 10px;
+        gap: 8px;
+    }
+
+    .chat-section {
+        padding: 10px;
+        gap: 8px;
+    }
+
+    .sync-controls {
+        flex-direction: row;
+    }
+
+    .sync-btn {
+        font-size: 11px;
+        padding: 12px 8px;
     }
 }
