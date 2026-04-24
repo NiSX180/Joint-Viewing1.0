@@ -38,7 +38,6 @@ function initApp() {
     initVKBridge();
     setupEventListeners();
 
-    // Показываем главное меню при запуске
     document.getElementById('mainMenu').classList.remove('hidden');
     document.querySelector('.app-header').classList.add('hidden');
     document.querySelector('.main-layout').classList.add('hidden');
@@ -117,7 +116,6 @@ function setupEventListeners() {
             document.querySelector('.app-header').classList.add('hidden');
             document.querySelector('.main-layout').classList.add('hidden');
 
-            // Очищаем плеер
             vkPlayerContainer.innerHTML = '<div class="player-placeholder"><p>Вставьте ссылку на видео VK</p><p class="placeholder-hint">vk.com/video-85016643_456239733</p></div>';
             videoUrlInput.value = '';
             syncSeekBtn.disabled = true;
@@ -126,9 +124,16 @@ function setupEventListeners() {
             chatMessages.innerHTML = '<div class="message system"><span class="message-text">Добро пожаловать в Joint Viewing</span><span class="message-time">Только что</span></div>';
         }
     });
+
+    document.getElementById('copyRoomBtn').addEventListener('click', function() {
+        navigator.clipboard?.writeText(currentRoom.id).then(() => {
+            addSystemMessage('ID скопирован: ' + currentRoom.id);
+        }).catch(() => {
+            prompt('ID комнаты:', currentRoom.id);
+        });
+    });
 }
 
-// Загрузка видео через iframe
 function loadVideo() {
     const url = videoUrlInput.value.trim();
     if (!url) {
@@ -172,7 +177,6 @@ function loadVideo() {
     addSystemMessage('Видео загружено');
 }
 
-// Кнопка Play/Pause
 function togglePlayPause() {
     if (!currentRoom.videoUrl) {
         alert('Сначала загрузите видео');
