@@ -250,9 +250,10 @@ function addChatMessage(author, text, isSystem = false) {
         <div class="message-text">${text}</div>
         <div class="message-time">${time}</div>
     `;
-    chatMessages.appendChild(div);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-}
+       chatMessages.appendChild(div);
+    requestAnimationFrame(() => {
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    });
 
 function listenToChat() {
     db.ref('rooms/' + currentRoom.id + '/messages').off();
