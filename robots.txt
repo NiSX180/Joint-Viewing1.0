@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://nisx180.github.io/Joint-Viewing1.0/sitemap.xml
