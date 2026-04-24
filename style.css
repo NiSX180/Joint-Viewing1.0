@@ -581,6 +581,23 @@ body {
 
 /* ===== МОБИЛЬНАЯ ВЕРСИЯ ===== */
 @media (max-width: 768px) {
+        .chat-section {
+        width: 100%;
+        padding: 14px;
+        padding-bottom: env(safe-area-inset-bottom, 14px);
+    }
+
+    .chat-container {
+        max-height: calc(100vh - 400px);
+        min-height: 200px;
+    }
+
+    .chat-input-area {
+        position: sticky;
+        bottom: 0;
+        background: #222;
+        padding: 8px 0;
+    }
         .app-header {
         flex-wrap: wrap;
         gap: 8px;
