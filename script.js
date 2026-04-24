@@ -61,6 +61,10 @@ function enterRoom() {
     document.querySelector('.app-header').classList.remove('hidden');
     document.querySelector('.main-layout').classList.remove('hidden');
     roomIdDisplay.textContent = currentRoom.id;
+    
+    // Очищаем старые сообщения и начинаем слушать чат
+    chatMessages.innerHTML = '';
+    listenToChat();
 }
 
 function generateRoomId() {
@@ -219,7 +223,16 @@ function syncSeek() {
 function sendChatMessage() {
     const text = messageInput.value.trim();
     if (!text) return;
-    addChatMessage(currentUser.name || 'Вы', text);
+    
+    const messageData = {
+        author: currentUser.name || 'Гость',
+        text: text,
+        time: Date.now()
+    };
+    
+    // Отправляем в Firebase в комнату
+    db.ref('rooms/' + currentRoom.id + '/messages').push(messageData);
+    
     messageInput.value = '';
 }
 
@@ -236,7 +249,12 @@ function addChatMessage(author, text, isSystem = false) {
     chatMessages.appendChild(div);
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
-
+function listenToChat() {
+    db.ref('rooms/' + currentRoom.id + '/messages').on('child_added', function(snapshot) {
+        const msg = snapshot.val();
+        addChatMessage(msg.author, msg.text, false);
+    });
+}
 function addSystemMessage(text) {
     addChatMessage('', text, true);
 }
