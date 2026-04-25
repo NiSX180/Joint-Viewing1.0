@@ -76,6 +76,27 @@ function generateRoomId() {
         id += chars[Math.floor(Math.random() * chars.length)];
     }
     return id;
+    function initApp() {
+    console.log('Joint Viewing запущен');
+    
+    // Проверяем, есть ли ID комнаты в ссылке
+    const hash = window.location.hash;
+    if (hash && hash.startsWith('#room_')) {
+        currentRoom.id = hash.replace('#room_', '');
+        enterRoom();
+        addSystemMessage('Вы присоединились к комнате: ' + currentRoom.id);
+        return;
+    }
+    
+    currentRoom.id = generateRoomId();
+    roomIdDisplay.textContent = currentRoom.id;
+    initVKBridge();
+    setupEventListeners();
+
+    document.getElementById('mainMenu').classList.remove('hidden');
+    document.querySelector('.app-header').classList.add('hidden');
+    document.querySelector('.main-layout').classList.add('hidden');
+}
 }
 
 // ==================== ГЛАВА 4: VK BRIDGE ====================
