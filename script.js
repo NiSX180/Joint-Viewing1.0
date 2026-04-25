@@ -59,25 +59,6 @@ const leaveRoomBtn = document.getElementById('leaveRoomBtn');
 // ==================== ГЛАВА 3: ИНИЦИАЛИЗАЦИЯ ====================
 function initApp() {
     console.log('Joint Viewing запущен');
-    currentRoom.id = generateRoomId();
-    roomIdDisplay.textContent = currentRoom.id;
-    initVKBridge();
-    setupEventListeners();
-
-    document.getElementById('mainMenu').classList.remove('hidden');
-    document.querySelector('.app-header').classList.add('hidden');
-    document.querySelector('.main-layout').classList.add('hidden');
-}
-
-function generateRoomId() {
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-    let id = '';
-    for (let i = 0; i < 4; i++) {
-        id += chars[Math.floor(Math.random() * chars.length)];
-    }
-    return id;
-    function initApp() {
-    console.log('Joint Viewing запущен');
     
     // Проверяем, есть ли ID комнаты в ссылке
     const hash = window.location.hash;
@@ -97,6 +78,14 @@ function generateRoomId() {
     document.querySelector('.app-header').classList.add('hidden');
     document.querySelector('.main-layout').classList.add('hidden');
 }
+
+function generateRoomId() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let id = '';
+    for (let i = 0; i < 4; i++) {
+        id += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return id;
 }
 
 // ==================== ГЛАВА 4: VK BRIDGE ====================
