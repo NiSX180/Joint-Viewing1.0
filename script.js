@@ -140,23 +140,21 @@ function enterRoom() {
 
 function shareRoom() {
     const link = 'https://nisxlar.github.io/Joint-Viewing/#room_' + currentRoom.id;
+    
+    // Копируем ссылку в буфер
+    navigator.clipboard?.writeText(link).then(() => {
+        addSystemMessage('Ссылка скопирована: ' + currentRoom.id);
+    }).catch(() => {
+        prompt('Ссылка на комнату:', link);
+    });
+    
+    // Если в VK — ещё и диалог поделиться
     if (vkBridgeAvailable) {
         vkBridge.send('VKWebAppShare', {
             link: link,
             text: 'Присоединяйся к комнате ' + currentRoom.id + ' в Joint Viewing!'
-        }).catch(() => fallbackShare(link));
-    } else {
-        fallbackShare(link);
+        }).catch(() => {});
     }
-    addSystemMessage('Комната: ' + currentRoom.id);
-}
-
-function fallbackShare(link) {
-    navigator.clipboard?.writeText(link).then(() => {
-        alert('Ссылка на комнату скопирована!');
-    }).catch(() => {
-        prompt('Ссылка на комнату:', link);
-    });
 }
 
 function leaveRoom() {
