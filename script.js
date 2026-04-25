@@ -118,7 +118,7 @@ function enterRoom() {
 }
 
 function shareRoom() {
-    const link = 'https://nisx180.github.io/Joint-Viewing1.0/#room_' + currentRoom.id;
+    const link = 'https://nisxlar.github.io/Joint-Viewing/#room_' + currentRoom.id;
     if (vkBridgeAvailable) {
         vkBridge.send('VKWebAppShare', {
             link: link,
