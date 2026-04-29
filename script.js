@@ -162,9 +162,6 @@ function leaveRoom() {
         syncSeekBtn.disabled = true;
         currentRoom.isPlaying = false;
         currentRoom.videoUrl = null;
-        playPauseBtn.textContent = 'ВОСПРОИЗВЕДЕНИЕ';
-        playPauseBtn.classList.add('play');
-        playPauseBtn.classList.remove('pause');
         addSystemMessage('Новая комната: ' + currentRoom.id);
     }
 }
