@@ -43,7 +43,6 @@ const userAvatar = document.getElementById('userAvatar');
 const vkPlayerContainer = document.getElementById('vkPlayerContainer');
 const videoUrlInput = document.getElementById('videoUrlInput');
 const loadVideoBtn = document.getElementById('loadVideoBtn');
-const playPauseBtn = document.getElementById('playPauseBtn');
 const syncSeekBtn = document.getElementById('syncSeekBtn');
 
 // Чат
@@ -55,6 +54,7 @@ const onlineCount = document.getElementById('onlineCount');
 // Комната
 const shareRoomBtn = document.getElementById('shareRoomBtn');
 const leaveRoomBtn = document.getElementById('leaveRoomBtn');
+
 
 // ==================== ГЛАВА 3: ИНИЦИАЛИЗАЦИЯ ====================
 function initApp() {
@@ -207,30 +207,16 @@ function loadVideo() {
     systemEvent('video', videoUrl);
 }
 
-function togglePlayPause() {
+function syncSeek() {
     if (!currentRoom.videoUrl) {
         alert('Сначала загрузите видео');
         return;
     }
 
-    if (currentRoom.isPlaying) {
-        playPauseBtn.textContent = 'ВОСПРОИЗВЕДЕНИЕ';
-        playPauseBtn.classList.add('play');
-        playPauseBtn.classList.remove('pause');
-        currentRoom.isPlaying = false;
-        addSystemMessage('Пауза');
-    } else {
-        playPauseBtn.textContent = 'ПАУЗА';
-        playPauseBtn.classList.add('pause');
-        playPauseBtn.classList.remove('play');
-        currentRoom.isPlaying = true;
-        addSystemMessage('Воспроизведение');
-    }
-}
-
-function syncSeek() {
-    addSystemMessage('Синхронизация — в разработке');
-    alert('Синхронизация будет добавлена позже');
+    // Переключаем воспроизведение для всех
+    const newState = !currentRoom.isPlaying;
+    db.ref('rooms/' + currentRoom.id + '/player/isPlaying').set(newState);
+    addSystemMessage(newState ? 'Воспроизведение синхронизировано' : 'Пауза синхронизирована');
 }
 
 function updatePlayer(oid, videoId, videoUrl, isPlaying) {
@@ -249,17 +235,8 @@ function updatePlayer(oid, videoId, videoUrl, isPlaying) {
     `;
 
     syncSeekBtn.disabled = false;
-
-    if (isPlaying) {
-        playPauseBtn.textContent = 'ПАУЗА';
-        playPauseBtn.classList.add('pause');
-        playPauseBtn.classList.remove('play');
-    } else {
-        playPauseBtn.textContent = 'ВОСПРОИЗВЕДЕНИЕ';
-        playPauseBtn.classList.add('play');
-        playPauseBtn.classList.remove('pause');
-    }
 }
+
 function listenToPlayer() {
     db.ref('rooms/' + currentRoom.id + '/player').off();
     db.ref('rooms/' + currentRoom.id + '/player').on('value', function(snapshot) {
@@ -370,14 +347,12 @@ function systemEvent(type, data) {
 
 // ==================== ГЛАВА 9: ОБРАБОТЧИКИ СОБЫТИЙ ====================
 function setupEventListeners() {
-    // Плеер
+       // Плеер
     loadVideoBtn.addEventListener('click', loadVideo);
     videoUrlInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') loadVideo();
     });
-    playPauseBtn.addEventListener('click', togglePlayPause);
     syncSeekBtn.addEventListener('click', syncSeek);
-
     // Чат
     sendMessageBtn.addEventListener('click', sendChatMessage);
     messageInput.addEventListener('keypress', (e) => {
