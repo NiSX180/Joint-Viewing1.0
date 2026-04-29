@@ -118,6 +118,7 @@ function enterRoom() {
 
     chatMessages.innerHTML = '';
     listenToChat();
+        listenToPlayer();
 
     const userRef = db.ref('rooms/' + currentRoom.id + '/users/' + Date.now());
     userRef.set(true);
@@ -192,26 +193,18 @@ function loadVideo() {
     const parts = match[1].split('_');
     const oid = parts[0];
     const videoId = parts[1];
+    const videoUrl = url;
 
-    currentRoom.videoUrl = url;
-    currentRoom.isPlaying = false;
-
-    vkPlayerContainer.innerHTML = `
-        <iframe 
-            src="https://vkvideo.ru/video_ext.php?oid=${oid}&id=${videoId}&hd=2&autoplay=0"
-            width="100%" height="100%" frameborder="0"
-            allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
-            allowfullscreen style="border: none;">
-        </iframe>
-    `;
-
-    syncSeekBtn.disabled = false;
-    playPauseBtn.textContent = 'ВОСПРОИЗВЕДЕНИЕ';
-    playPauseBtn.classList.add('play');
-    playPauseBtn.classList.remove('pause');
+    // Сохраняем в Firebase для всех
+    db.ref('rooms/' + currentRoom.id + '/player').set({
+        oid: oid,
+        videoId: videoId,
+        videoUrl: videoUrl,
+        isPlaying: false
+    });
 
     addSystemMessage('Видео загружено');
-    systemEvent('video', url);
+    systemEvent('video', videoUrl);
 }
 
 function togglePlayPause() {
@@ -238,6 +231,43 @@ function togglePlayPause() {
 function syncSeek() {
     addSystemMessage('Синхронизация — в разработке');
     alert('Синхронизация будет добавлена позже');
+}
+
+function updatePlayer(oid, videoId, videoUrl, isPlaying) {
+    currentRoom.videoUrl = videoUrl;
+    currentRoom.isPlaying = isPlaying;
+
+    const autoplay = isPlaying ? '1' : '0';
+
+    vkPlayerContainer.innerHTML = `
+        <iframe 
+            src="https://vkvideo.ru/video_ext.php?oid=${oid}&id=${videoId}&hd=2&autoplay=${autoplay}"
+            width="100%" height="100%" frameborder="0"
+            allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
+            allowfullscreen style="border: none;">
+        </iframe>
+    `;
+
+    syncSeekBtn.disabled = false;
+
+    if (isPlaying) {
+        playPauseBtn.textContent = 'ПАУЗА';
+        playPauseBtn.classList.add('pause');
+        playPauseBtn.classList.remove('play');
+    } else {
+        playPauseBtn.textContent = 'ВОСПРОИЗВЕДЕНИЕ';
+        playPauseBtn.classList.add('play');
+        playPauseBtn.classList.remove('pause');
+    }
+}
+function listenToPlayer() {
+    db.ref('rooms/' + currentRoom.id + '/player').off();
+    db.ref('rooms/' + currentRoom.id + '/player').on('value', function(snapshot) {
+        const data = snapshot.val();
+        if (data) {
+            updatePlayer(data.oid, data.videoId, data.videoUrl, data.isPlaying);
+        }
+    });
 }
 
 // ==================== ГЛАВА 7: ЧАТ ====================
