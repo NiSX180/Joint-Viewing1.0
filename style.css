@@ -231,12 +231,6 @@ body {
     color: #fff;
 }
 
-.sync-btn.secondary {
-    background: #2a2a2a;
-    color: #999;
-    border: 1px solid #3a3a3a;
-}
-
 .sync-btn:disabled {
     opacity: 0.3;
     cursor: not-allowed;
@@ -244,23 +238,6 @@ body {
 
 .sync-btn:active:not(:disabled) {
     transform: scale(0.98);
-}
-
-.expand-btn {
-    padding: 12px;
-    background: #2a2a2a;
-    border: 1px solid #3a3a3a;
-    border-radius: 8px;
-    color: #aaa;
-    font-weight: 600;
-    font-size: 12px;
-    cursor: pointer;
-    letter-spacing: 1px;
-    transition: background 0.2s;
-}
-
-.expand-btn:hover {
-    background: #333;
 }
 
 /* ==================== 6. ЧАТ (ПРАВАЯ КОЛОНКА) ==================== */
@@ -711,10 +688,6 @@ body {
         aspect-ratio: 16 / 9;
     }
 
-    .expand-btn {
-        display: none;
-    }
-
     /* Чат */
     .chat-section {
         width: 100%;
@@ -744,7 +717,6 @@ body {
         flex-direction: row;
     }
 
-    .expand-btn,
     .close-fullscreen-btn,
     .action-btn {
         background: #2a2a2a;
@@ -757,7 +729,6 @@ body {
         letter-spacing: 1px;
     }
 }
-
 /* ==================== 11. ОЧЕНЬ МАЛЕНЬКИЕ ЭКРАНЫ ==================== */
 @media (max-width: 400px) {
     .player-section {
