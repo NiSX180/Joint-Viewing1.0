@@ -243,6 +243,7 @@ body {
 /* ==================== 6. ЧАТ (ПРАВАЯ КОЛОНКА) ==================== */
 .chat-section {
     width: 350px;
+    height: calc(100vh - 62px);
     display: flex;
     flex-direction: column;
     padding: 20px;
@@ -250,7 +251,7 @@ body {
 }
 
 .chat-container {
-    flex: 1;
+    height: 100%;
     min-height: 0;
     background: #222;
     border-radius: 12px;
