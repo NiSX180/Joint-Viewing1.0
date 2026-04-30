@@ -121,6 +121,7 @@ body {
 .player-section {
     flex: 1;
     min-width: 0;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     padding: 20px;
@@ -242,7 +243,8 @@ body {
 
 /* ==================== 6. ЧАТ (ПРАВАЯ КОЛОНКА) ==================== */
 .chat-section {
-    width: 350px;
+    width: 320px;
+    flex-shrink: 0;
     height: calc(100vh - 62px);
     display: flex;
     flex-direction: column;
